@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Study Notes</title> <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="lock-screen">
+        <div class="lock-box">
+            <h2>Portal Verification</h2>
+            <input type="password" id="password-input" placeholder="Enter Access Code">
+            <button onclick="checkPassword()">Unlock</button>
+        </div>
+    </div>
+
+    <div id="app-container" style="display: none;">
+        <header class="app-header">
+            <span class="lock-indicator">🔒 Status: Secure</span>
+            <span class="app-logo">✨ Lovebirds ✨</span>
+            <button class="quick-lock-btn" onclick="lockApp()">Quick Lock</button>
+        </header>
+
+        <div class="nav-tabs">
+            <div class="tab active" onclick="switchTab('chat', this)">
+                <span>💬 Chat</span>
+            </div>
+            <div class="tab" onclick="switchTab('gallery', this)">
+                <span>📸 Moments</span>
+            </div>
+        </div>
+
+        <div id="chat-screen" class="screen active-screen">
+            <div id="chat-messages">
+                </div>
+            
+            <div class="chat-input-area">
+                <input type="text" id="msg-input" placeholder="Message...">
+                <button class="send-btn" onclick="sendTextMessage()">➔</button>
+            </div>
+        </div>
+
+        <div id="gallery-screen" class="screen">
+            <div class="gallery-grid" id="gallery-grid">
+                <div class="gallery-item"><img src="https://picsum.photos/400?random=1" alt="Memory"></div>
+                <div class="gallery-item"><img src="https://picsum.photos/400?random=2" alt="Memory"></div>
+                <div class="gallery-item"><img src="https://picsum.photos/400?random=3" alt="Memory"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,244 @@
+:root {
+    --insta-dark: #121212;
+    --insta-card: #1e1e1e;
+    --insta-gradient: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+    --love-pink: #ff477e;
+    --chat-me: #3797f0; /* Insta Blue for Me */
+    --chat-them: #262626; /* Dark Grey for Them */
+    --text-main: #f5f5f5;
+    --text-muted: #8e8e8e;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+body {
+    background-color: #000000;
+    color: var(--text-main);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* --- Camouflage Lock Screen --- */
+#lock-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #1c1c1e;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.lock-box {
+    background: #2c2c2e;
+    padding: 30px;
+    border-radius: 15px;
+    text-align: center;
+    width: 85%;
+    max-width: 340px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.lock-box h2 {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+}
+
+.lock-box input {
+    width: 100%;
+    padding: 12px;
+    background: #3a3a3c;
+    border: none;
+    border-radius: 10px;
+    color: white;
+    text-align: center;
+    font-size: 1rem;
+    margin-bottom: 15px;
+    outline: none;
+}
+
+.lock-box button {
+    background: var(--insta-gradient);
+    color: white;
+    border: none;
+    padding: 12px;
+    width: 100%;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* --- Main App UI --- */
+#app-container {
+    width: 100%;
+    max-width: 425px;
+    height: 100vh;
+    background: var(--insta-dark);
+    display: flex;
+    flex-direction: column;
+    border-left: 1px solid #262626;
+    border-right: 1px solid #262626;
+}
+
+.app-header {
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #262626;
+    background: var(--insta-dark);
+}
+
+.lock-indicator {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+.app-logo {
+    font-weight: bold;
+    font-size: 1.2rem;
+    background: var(--insta-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.quick-lock-btn {
+    background: #262626;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    cursor: pointer;
+}
+
+/* Tabs */
+.nav-tabs {
+    display: flex;
+    border-bottom: 1px solid #262626;
+}
+
+.tab {
+    flex: 1;
+    text-align: center;
+    padding: 15px;
+    cursor: pointer;
+    color: var(--text-muted);
+    font-weight: 600;
+    transition: 0.2s;
+}
+
+.tab.active {
+    color: white;
+    border-bottom: 2px solid white;
+}
+
+/* Screens */
+.screen {
+    flex: 1;
+    display: none;
+    overflow-y: auto;
+    padding: 15px;
+}
+
+.screen.active-screen {
+    display: flex;
+    flex-direction: column;
+}
+
+/* --- Chat Elements --- */
+#chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding-bottom: 10px;
+}
+
+#chat-messages::-webkit-scrollbar {
+    width: 0px;
+}
+
+.msg {
+    max-width: 75%;
+    padding: 11px 16px;
+    border-radius: 20px;
+    font-size: 0.95rem;
+    line-height: 1.4;
+    word-wrap: break-word;
+}
+
+.msg.me {
+    background: var(--chat-me);
+    color: white;
+    align-self: flex-end;
+}
+
+.msg.them {
+    background: var(--chat-them);
+    color: var(--text-main);
+    align-self: flex-start;
+}
+
+/* Input Area Like Insta DM */
+.chat-input-area {
+    margin: 10px 15px 20px 15px;
+    padding: 5px 10px;
+    background: #262626;
+    border-radius: 25px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.chat-input-area input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    padding: 10px;
+    color: white;
+    outline: none;
+    font-size: 0.95rem;
+}
+
+.send-btn {
+    background: transparent;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 5px;
+    color: var(--chat-me);
+    font-weight: bold;
+}
+
+/* --- Gallery Grid --- */
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3px;
+}
+
+.gallery-item {
+    aspect-ratio: 1;
+    background: #262626;
+    overflow: hidden;
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}

@@ -1,14 +1,19 @@
 // Connected with your Supabase details!
 const SUPABASE_URL = "https://biuuhmdmaclrtkevaiar.supabase.co";
-const SUPABASE_KEY = "sb_publishable_JbFaM-yEJdInm94jNW7V9Q_fgCrjoao";
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJpdXlobWRtYWNsdXJrZXZhaWFyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTU5NzkxNzcsImV4cCI6MjAzMTU1NTE3N30.8HhWpY2Cmsb-R_g9r_o-uYsh_y0-8pS6gN3l9W_FpEw";
 
 const SECRET_PASSWORD = "taani20"; 
 let currentUser = localStorage.getItem("chat_user") || "";
 
 // login setup window
-if (!currentUser) {
-    currentUser = prompt("Who is logging in? (Type: Boy or Girl)").toLowerCase();
-    localStorage.setItem("chat_user", currentUser);
+if (!currentUser || currentUser === "null" || currentUser === "") {
+    currentUser = prompt("Who is logging in? (Type: boy or girl)");
+    if (currentUser) {
+        currentUser = currentUser.toLowerCase().trim();
+        localStorage.setItem("chat_user", currentUser);
+    } else {
+        currentUser = "user";
+    }
 }
 
 function checkPassword() {
@@ -57,14 +62,17 @@ async function fetchMessages() {
         const data = await response.json();
         
         const chatMessages = document.getElementById('chat-messages');
+        if (!chatMessages) return;
         chatMessages.innerHTML = ""; // Purana reset karo
         
         data.forEach(msg => {
             const newMsg = document.createElement('div');
+            newMsg.classList.add('msg');
+            
             if (msg.sender === currentUser) {
-                newMsg.classList.add('msg', 'me');
+                newMsg.classList.add('me');
             } else {
-                newMsg.classList.add('msg', 'them');
+                newMsg.classList.add('them');
             }
             
             const span = document.createElement('span');
@@ -94,5 +102,9 @@ function switchTab(tabName, tabElement) {
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active-screen'));
     tabElement.classList.add('active');
-    document.getElementById(`${tabName}-screen`).classList.add('active-screen');
+    
+    const targetScreen = document.getElementById(`${tabName}-screen`);
+    if(targetScreen) {
+        targetScreen.classList.add('active-screen');
+    }
 }

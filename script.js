@@ -1,7 +1,6 @@
 // Connected with your Supabase details!
 const SUPABASE_URL = "https://biuuhmdmaclrtkevaiar.supabase.co";
 const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJpdXlobWRtYWNsdXJrZXZhaWFyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTU5NzkxNzcsImV4cCI6MjAzMTU1NTE3N30.8HhWpY2Cmsb-R_g9r_o-uYsh_y0-8pS6gN3l9W_FpEw";
-
 const SECRET_PASSWORD = "taani20"; 
 let currentUser = localStorage.getItem("chat_user") || "";
 

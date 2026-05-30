@@ -5,52 +5,62 @@ const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZ
 const SECRET_PASSWORD = "taani20"; 
 let currentUser = localStorage.getItem("chat_user") || "";
 
-// login setup window
-if (!currentUser || currentUser === "null" || currentUser === "") {
-    currentUser = prompt("Who is logging in? (Type: boy or girl)");
-    if (currentUser) {
-        currentUser = currentUser.toLowerCase().trim();
+// Prompt setup to handle users cleanly
+function askWhoIsLoggingIn() {
+    let name = prompt("Who is logging in? (Type: boy or girl)");
+    if (name) {
+        currentUser = name.toLowerCase().trim();
         localStorage.setItem("chat_user", currentUser);
     } else {
         currentUser = "user";
     }
 }
 
+// Trigger prompt if user is completely empty or resetting
+if (!currentUser || currentUser === "null" || currentUser === "") {
+    askWhoIsLoggingIn();
+}
+
 function checkPassword() {
-    const pin = document.getElementById('password-input').value;
-    if(pin === SECRET_PASSWORD) {
+    const pin = document.getElementById('password-input').value.trim();
+    if (pin === SECRET_PASSWORD) {
         document.getElementById('lock-screen').style.display = 'none';
         document.getElementById('app-container').style.display = 'flex';
         document.getElementById('password-input').value = ""; 
+        
+        // Load messages instantly
         fetchMessages();
-        // Har 3 second mein automatically naye messages screen par lekar aayega
+        // Check for new incoming messages every 3 seconds
         setInterval(fetchMessages, 3000); 
     } else {
         alert("Wrong code! Try again.");
     }
 }
 
-// Message Database mein send karne ke liye
 async function sendTextMessage() {
     const input = document.getElementById('msg-input');
     const text = input.value.trim();
-    if(text === "") return;
+    if (text === "") return;
 
-    await fetch(`${SUPABASE_URL}/rest/v1/messages`, {
-        method: 'POST',
-        headers: {
-            'apikey': SUPABASE_KEY,
-            'Authorization': `Bearer ${SUPABASE_KEY}`,
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ sender: currentUser, text: text })
-    });
-
-    input.value = "";
-    fetchMessages(); // Turant refresh karo messages
+    try {
+        await fetch(`${SUPABASE_URL}/rest/v1/messages`, {
+            method: 'POST',
+            headers: {
+                'apikey': SUPABASE_KEY,
+                'Authorization': `Bearer ${SUPABASE_KEY}`,
+                'Content-Type': 'application/json',
+                'Prefer': 'return=minimal'
+            },
+            body: JSON.stringify({ sender: currentUser, text: text })
+        });
+        
+        input.value = "";
+        fetchMessages(); // Instantly reload to show your sent text
+    } catch (e) {
+        console.error("Error sending message:", e);
+    }
 }
 
-// Messages Supabase se fetch (load) karne ke liye
 async function fetchMessages() {
     try {
         const response = await fetch(`${SUPABASE_URL}/rest/v1/messages?select=*&order=id.asc`, {
@@ -62,13 +72,15 @@ async function fetchMessages() {
         const data = await response.json();
         
         const chatMessages = document.getElementById('chat-messages');
-        if (!chatMessages) return;
-        chatMessages.innerHTML = ""; // Purana reset karo
+        if (!chatMessages || !Array.isArray(data)) return;
+        
+        chatMessages.innerHTML = ""; 
         
         data.forEach(msg => {
             const newMsg = document.createElement('div');
             newMsg.classList.add('msg');
             
+            // Checks if message sender matches local login tag
             if (msg.sender === currentUser) {
                 newMsg.classList.add('me');
             } else {
@@ -82,29 +94,13 @@ async function fetchMessages() {
             newMsg.appendChild(span);
             chatMessages.appendChild(newMsg);
         });
-        chatMessages.scrollTop = chatMessages.scrollHeight; // Auto scroll to bottom
-    } catch(err) {
-        console.log("Error fetching messages:", err);
+        chatMessages.scrollTop = chatMessages.scrollHeight; 
+    } catch (err) {
+        console.error("Error fetching messages:", err);
     }
 }
 
-// Enter daba kar chat send ho sake
+// Allow sending text on pressing Enter key
 document.getElementById('msg-input').addEventListener('keypress', function(e) {
     if (e.key === 'Enter') sendTextMessage();
 });
-
-function lockApp() {
-    document.getElementById('app-container').style.display = 'none';
-    document.getElementById('lock-screen').style.display = 'flex';
-}
-
-function switchTab(tabName, tabElement) {
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active-screen'));
-    tabElement.classList.add('active');
-    
-    const targetScreen = document.getElementById(`${tabName}-screen`);
-    if(targetScreen) {
-        targetScreen.classList.add('active-screen');
-    }
-}

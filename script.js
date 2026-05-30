@@ -2,7 +2,7 @@
 const SUPABASE_URL = "https://biuuhmdmaclrtkevaiar.supabase.co";
 const SUPABASE_KEY = "sb_publishable_JbFaM-yEJdInm94jNW7V9Q_fgCrjoao";
 
-const SECRET_PASSWORD = "lovebirdsecret"; 
+const SECRET_PASSWORD = "taani20"; 
 let currentUser = localStorage.getItem("chat_user") || "";
 
 // login setup window
